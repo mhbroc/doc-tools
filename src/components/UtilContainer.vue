@@ -1,9 +1,21 @@
 <template>
-	<div class="container">
+	<div class="_container">
 		<DivTextArea v-model="left" />
 		<div id="btnCluster">
-			<button @click="convertJson" >Convert json output</button>
-			<button @click="convertTable" >Convert table output</button>
+			<!-- <button @click="convertJson" >Convert json output</button>
+			<button @click="convertTable" >Convert table output</button> -->
+			<div class="field">
+				<b-radio v-model="convertMode"
+					native-value="json">
+					Json output
+				</b-radio>
+			</div>
+			<div class="field">
+				<b-radio v-model="convertMode"
+					native-value="table">
+					Table output
+				</b-radio>
+			</div>
 		</div>
 		<DivTextArea :message="output" />
 	</div>
@@ -20,26 +32,28 @@ export default {
 	data() {
 		return {
 			left: "",
-			output: ""
+			output: "",
+			convertMode: "json"
 		};
+	},
+	watch: {
+		left() { this.convert(); },
+		convertMode() { this.convert(); }
+
 	},
 	mounted() {
 
 	},
 	methods: {
-		convertJson()
+		convert()
 		{
 			try
 			{
 				const input = JSON.parse(this.left);
-				this.output = JSON.stringify(traverseNormal(input), null, 4);
-			} catch (error) { console.log(error); }
-		},
-		convertTable()
-		{
-			try {
-				const input = JSON.parse(this.left);
-				this.output = buildTable(traverse(input), withrules);
+				if (this.convertMode === "json")
+					this.output = JSON.stringify(traverseNormal(input), null, 4);
+				else
+					this.output = buildTable(traverse(input), withrules);
 			} catch (error) { console.log(error); }
 		}
 	},
@@ -50,17 +64,17 @@ export default {
 </script>
 
 <style scoped>
-.container
+._container
 {
+	padding: 16px 8px;
 	display: flex;
 	flex-direction: row;
 	justify-content: space-between;
+	align-items: flex-start;
 }
 
 #btnCluster
 {
-	align-self: flex-start;
-
 	display: flex;
 	flex-direction: column;
 }

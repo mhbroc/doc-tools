@@ -1,5 +1,5 @@
 <template>
-    <div class="textarea" contenteditable="true" @input="sendUpdate($event.target)" >{{ message }}</div>
+    <div class="_textarea" contenteditable="true" @input="sendUpdate($event.target)" >{{ message }}</div>
 </template>
 
 <script>
@@ -16,9 +16,9 @@ export default {
 </script>
 
 <style scoped>
-.textarea {
+._textarea {
 	width: 40%;
-	min-height: auto;
+	min-height: 200px;
 	height: auto;
     /* width:auto; */
 	border:1px solid rgba(63,63,63,1);
