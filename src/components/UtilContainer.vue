@@ -2,8 +2,6 @@
 	<div class="_container">
 		<DivTextArea v-model="left" />
 		<div id="btnCluster">
-			<!-- <button @click="convertJson" >Convert json output</button>
-			<button @click="convertTable" >Convert table output</button> -->
 			<div class="field">
 				<b-radio v-model="convertMode"
 					native-value="json">
