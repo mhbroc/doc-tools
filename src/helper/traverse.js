@@ -5,9 +5,11 @@ export function traverse(obj, parent=undefined)
 {
     if (Array.isArray(obj))
     {
-        if (iu(parent))
-            parent += "[]"
-        return traverse(obj[0], parent);
+        if (obj.length === 0)
+			return [];
+		if (iu(parent))
+			parent += "[]"
+		return traverse(obj[0], parent);
     }
     else
     {
@@ -33,7 +35,11 @@ export function traverseNormal(obj)
 {
     if (Array.isArray(obj))
     {
-        return [traverseNormal(obj[0])];
+        if (obj.length === 0)
+			return [];
+		if (typeof obj[0] !== "object")
+			return [typeof obj[0]]
+		return [traverseNormal(obj[0])];
     }
     else
     {
