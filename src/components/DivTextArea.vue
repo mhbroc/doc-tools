@@ -1,5 +1,5 @@
 <template>
-    <div class="_textarea" contenteditable="true" @input="sendUpdate($event.target)" >{{ message }}</div>
+    <div class="_textarea" contenteditable="true" @input="sendUpdate($event.target)" @paste.prevent="pasteHandler" >{{ message }}</div>
 </template>
 
 <script>
@@ -7,6 +7,11 @@ export default {
     name: "DivTextArea",
     props: ["message"],
     methods: {
+        pasteHandler(e)
+        {
+            let text = e.clipboardData.getData("text/plain");
+            document.execCommand("insertHTML", false, text);
+        },
         sendUpdate(e)
         {
             this.$emit("input", e.innerText);
