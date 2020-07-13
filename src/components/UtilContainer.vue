@@ -2,6 +2,7 @@
 	<div class="_container">
 		<DivTextArea v-model="left" />
 		<div id="btnCluster">
+			<!-- radio select -->
 			<div class="field">
 				<b-radio v-model="convertMode"
 					native-value="json">
@@ -14,15 +15,30 @@
 					Table output
 				</b-radio>
 			</div>
+
+			<!-- table options -->
+			<div v-if="convertMode === 'table'" class="field">
+				<b-field label="Template">
+					<b-select v-model="templateSelect">
+						<option 
+							v-for="(t, i) in Object.keys(templates)"
+							:key="i"
+							:value="t"
+						>
+						{{ t }}
+						</option>
+					</b-select>
+				</b-field>
+			</div>
 		</div>
-		<DivTextArea :message="output" />
+		<DivTextArea>{{ output }}</DivTextArea>
 	</div>
 </template>
 
 <script>
 import DivTextArea from "./DivTextArea";
 import { traverse, traverseNormal } from "../helper/traverse";
-import withrules from "../data/templates/with-rules";
+import templates from "../data/template";
 import { buildTable } from "../helper/table";
 
 export default {
@@ -31,16 +47,23 @@ export default {
 		return {
 			left: "",
 			output: "",
-			convertMode: "json"
+			convertMode: "json",
+			templates,
+			templateSelect: "with-rules"
 		};
 	},
-	watch: {
-		left() { this.convert(); },
-		convertMode() { this.convert(); }
-
+	computed: {
+		inputWatch()
+		{
+			return "".concat(
+				this.left,
+				this.convertMode,
+				this.templateSelect
+			);
+		}
 	},
-	mounted() {
-
+	watch: {
+		inputWatch() { this.convert(); }
 	},
 	methods: {
 		convert()
@@ -49,9 +72,9 @@ export default {
 			{
 				const input = JSON.parse(this.left);
 				if (this.convertMode === "json")
-					this.output = JSON.stringify(traverseNormal(input), null, 4);
+					this.output = JSON.stringify(traverseNormal(input), null, 4).replace(/\"/g, "");
 				else
-					this.output = buildTable(traverse(input), withrules);
+					this.output = buildTable(traverse(input), templates[this.templateSelect]);
 			} catch (error) { console.log(error); }
 		}
 	},
