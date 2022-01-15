@@ -10,7 +10,7 @@
     "buefy": "^0.8.20",
     "core-js": "^3.6.5",
     "debounce": "^1.2.0",
-    "marked": "^1.1.0",
+    "marked": "^4.0.10",
     "vue": "^2.6.11"
   },
   "devDependencies": {
